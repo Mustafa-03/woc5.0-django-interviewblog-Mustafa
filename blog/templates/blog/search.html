@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+
+{% block body %}
+
+
+{% for i in all_objects %} 
+<div class="container">
+  <div class="col p-4 d-flex flex-column position-static">
+    <strong class="d-inline-block mb-2 text-primary">Blog By: </strong>
+    <h3 class="mb-0">{{i.company_name}}</h3>
+    <div class="mb-1 text-muted">{{i.work_ex}} Years Work Experience</div>
+    <div class="mb-1 text-muted">{{i.job_profile}}</div>
+    <p class="card-text mb-auto">{{i.experience | truncatechars:200 }}</p>
+    <div>
+      <a href="{{i.slug}}" role="button" class="btn btn-primary my-4">Continue reading</a>
+    </div>
+  </div>
+  </div>
+
+{% endfor %}
+
+
+
+{% endblock %}
