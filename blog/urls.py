@@ -9,7 +9,15 @@ urlpatterns = [
     path('home',views.home,name="Home"),
     path('login',views.handlelogin,name="Log in"),
     path('logout',views.handlelogout,name="Log Out"),
-    path('<str:slug>',views.viewblog,name="View Blog"),
-    path('aboutus',views.aboutus,name="Aboutus")
-
+    path('view/<str:slug>',views.viewblog,name="View Blog"),
+    path('search',views.search,name='search'),
+    path('abts',views.abts,name="abts"),
+    path('contactus',views.contactus,name="contactus"),
+    path('addblog',views.addblog,name="addblog"),
+    path('postblog',views.postblog,name="postblog"),
+    path('myblogs',views.myblogs,name="myblogs"),
+    path('submitquery',views.submitquery,name="submitquery"),
+    path('saveblog',views.saveblog,name="saveblog")
+    
+    
 ]

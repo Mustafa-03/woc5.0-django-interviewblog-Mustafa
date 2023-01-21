@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+
+{% block body %}
+
+<h1 align="CENTER">CONTACT US</h1>
+<h6 align="CENTER">Let's get this conversation started. Tell us a bit about yourself and we will get in touch with you as soon as we can</h6>
+<form action='/submitquery' method="post">
+    <div class="contact_query">
+        <div class="content">
+
+            <p>
+                <label for="exampleFormControlInput1" class="form-label">Name</label>
+                <input type="text" class="form-control" name="name"  id="name" required >
+            </p>
+          <p>
+            <label for="exampleFormControlInput1" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" id="username" >
+          </p>
+          <p>
+            <label for="exampleFormControlTextarea1" class="form-label">Query</label>
+            <textarea class="form-control" name="query" id="query" rows="5" required></textarea>
+          </p>
+        </div>
+      </div>
+
+{% endblock %}

@@ -5,9 +5,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as auth_login
 from .models import Blog
+from .models import contact
 
 def login(request):
-    return render(request,'blog/login.html')
+    return render(request,'blog/base.html')
 
 def handlesignup(request):
     if request.method=="POST":
@@ -43,8 +44,8 @@ def handlesignup(request):
 
 
 def home(request):
-    print("home")
-    all_objects=Blog.objects.all()
+    q='home'
+    all_objects=Blog.objects.filter(savedby__icontains=q)
     param={"all_objects":all_objects}
 
     return render(request,'blog/home.html',param)
@@ -81,12 +82,53 @@ def viewblog(request, slug):
 
 def search(request):
     query=request.GET['query']
-    print(query)
-    all_objects=Blog.objects.get(company_name__icontains=query)
-    params={'all_objects':all_objects}
-    return render (request,'/blog/search.html',params)
+    company_objects=Blog.objects.filter(company_name__icontains=query)
+    author_objects=Blog.objects.filter(author__icontains=query)
+    job_profile_objects=Blog.objects.filter(job_profile__icontains=query)
+    params={'company_objects':company_objects,'author_objects':author_objects,'job_profile_objects':job_profile_objects}
+    return render (request,'blog/search.html',params)
 
 
-def aboutus(request):
-    print("here")
-    return render(request,'/blog/aboutus.html')
+def abts(request):
+    return render(request,'blog/abts.html')
+
+def contactus(request):
+    return render(request,'blog/contactus.html')
+
+
+def addblog(request):
+    return render(request,'blog/addblog.html')
+
+def postblog(request):
+    company_name=request.POST['company_name']
+    job_profile=request.POST['job_profile']
+    work_ex=request.POST['work_ex']
+    experience=request.POST['experience']
+    slug=request.POST['slug']
+    if company_name=="" or job_profile=="" or work_ex=="" or experience=="" or slug=="":
+        messages.error("Invalid Post.Please Try Again Later")
+    curr_user=request.user
+    a=Blog(company_name=company_name,job_profile=job_profile,work_ex=work_ex,experience=experience,slug=slug,savedby='home',author=curr_user.username)
+    a.save()
+
+    return redirect('/home')
+
+def myblogs(request):
+    curr_user=request.user
+    author_objects=Blog.objects.filter(author__icontains=curr_user.username)
+    params={'author_objects':author_objects}
+    return render (request,'blog/search.html',params)
+
+
+def submitquery(request):
+    name=request.POST['contact_name']
+    username=request.POST['contact_username']
+    query=request.POST['contact_query']
+    a=contact(name=name,username=username,query=query)
+    a.save()
+
+    return redirect('/')
+
+def saveblog(request):
+    pass
+    

@@ -5,7 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Interview Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    
+    <style>
+      .content {
+        margin: auto;
+        width: 50%;
+        height: 50%;
+        border: 3px solid green;
+        padding: 10px;
+      }
+      .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 25%;
+        height: 25%
+      }
+      .ablg {
+        margin: auto;
+        width: 50%;
+        height: 50%;
+        border: 3px solid green;
+        padding: 10px;
+      }
+    </style>
     {% block css %} {% endblock %}
 
   </head>
@@ -20,15 +42,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if user.is_authenticated %}
+              <li class="nav-item" >
+                <a class="nav-link" href="/addblog">Add A Blog</a>
+              </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Add A Blog</a>
+                <a class="nav-link" href="/myblogs">My Blogs</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Saved Blogs</a>
               </li>
             {% endif %}
             <li class="nav-item">
-              <a class="nav-link" href="/aboutus">About Us</a>
+              <a class="nav-link" href="{% url 'abts' %}">About Us</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contact Us</a>
+              <a class="nav-link" href="/contactus">Contact Us</a>
             </li>
           </ul>
           <form method="get" action="/search" class="d-flex" role="search">
@@ -61,6 +89,96 @@
       </div>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+    <!-- Login Modal -->
+
+<div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel" align="CENTER">Login</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action='/login' method="post">
+      <div class="login">
+          <div class="content">
+            <p>
+              <label for="exampleFormControlInput1" class="form-label">Username</label>
+              <input type="text" class="form-control" name="loginusername" id="UsernameLogin" placeholder="exampleusername" required>
+            </p>
+
+            <p>
+              <label for="exampleFormControlTextarea1" class="form-label">Password</label>
+              <input type="password" class="form-control" name="loginpass" id="PassLogin" rows="1" required></input>
+            </p>
+          </div>
+        </div>
+        {% csrf_token %}
+        <div class="login-footer">
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </form>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="signup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel" align="CENTER">Sign Up</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action='/signup' method="post">
+      <div class="signup">
+          <div class="content">
+
+            <p>
+              <label for="exampleFormControlInput1" class="form-label">Username</label>
+              <input type="text" class="form-control" name="username" id="username" >
+            </p>
+
+            <p>
+              <label for="exampleFormControlInput1" class="form-label">Name</label>
+              <input type="text" class="form-control" name="fname"  id="fname" required >
+            </p>
+
+            <p>
+              <label for="exampleFormControlInput1" class="form-label">Surname</label>
+              <input type="text" class="form-control" name="lname" id="lname" required>
+            </p>
+
+            <p>
+              <label for="exampleFormControlInput1" class="form-label">Email address</label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+            </p>
+
+            <p>
+              <label for="exampleFormControlTextarea1" class="form-label">Password</label>
+              <input type="password" class="form-control" name="pass1" id="pass1" rows="1" required></input>
+            </p>
+
+            <p>
+              <label for="exampleFormControlTextarea1" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" name="pass2" id="pass2" rows="1" required></input>
+            </p>
+          </div>
+        </div>
+        {% csrf_token %}
+        <div class="login-footer">
+          <button type="submit" class="btn btn-primary">Sign Up</button>  <!-- Type = Submit creates a submit button -->
+        </div>
+      </form>
+
+
+
+    </div>
+  </div>
+</div>
     {% block body %}
       
     {% endblock %}
