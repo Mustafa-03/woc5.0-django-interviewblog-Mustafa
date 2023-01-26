@@ -1,15 +1,61 @@
 {% extends 'blog/base.html' %}
 
+{% block css %}
+<style>
+.card-text{
+  word-wrap:normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.container{
+  border:3x solid black;
+  background-color: rgb(45, 44, 44);
+  color: white;
+  border-radius: 30px;
+  max-width: 50%;
+}
+.blog_by{
+    color:aquamarine;
+}
+.profile{
+    color:yellow;
+}
+.blog_button{
+  margin: 2% 2% 2% 2%;
+}
+
+</style>
+{% endblock %}
+
 
 {% block body %}
 
-<div class="container">
+<div class="container mt-4">
+  {% if request.user|stringformat:'s' == post.author|stringformat:'s' %}
+  
+    <a href="/save/{{post.id}}" role="button" class="btn btn-success my-4" style="float:right">Save</a>
+    <br>
+  {% else %}
+  <br>
+  {% endif %}
+    <h1>{{post.company_name}}</h1>
+
+    <h6 class="profile">Job Profile : {{post.job_profile}}</h6>
+    <h5 class="blog_by">BLOG BY: {{post.author}}</h5>
+    <p style="text-align:right">Last Updated - {{post.updated_at}}</p>
+    <hr>
+    <br>
+    <p class="mb-4" align="center">{{post.experience}}</p>
+    <br>
+    {% if request.user|stringformat:'s' == post.author|stringformat:'s' %}
+      <a href="/editblog/{{post.slug}}" role="button" class="btn btn-success my-2 blog_button" style="float:right">Edit</a>
+      <a href="/delblog/{{post.slug}}" role="button" class="btn btn-success my-2 blog_button" style="float:right">Delete</a>
+    {% endif %}
+    <br>
+    <br>
+    <br>
     
-    <h1 align="CENTER">{{post.company_name}}</h1>
-    <a href="/editblog/{{post.slug}}" role="button" class="btn btn-primary">Edit</a>
-    <h6 align="CENTER">Job Profile : {{post.job_profile}}</h6>
-    <h5 align="RIGHT">BLOG BY: {{post.author}}</h5>
-    <p>{{post.experience}}</p>
 
 </div>
 

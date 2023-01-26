@@ -6,11 +6,15 @@ from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as auth_login
 from .models import Blog
 from .models import contact
+from .models import Profile
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 
 def login(request):
     return render(request,'blog/firstpage.html')
+
+def signuppage(request):
+    return render(request,'blog/signup.html')
 
 def handlesignup(request):
     if request.method=="POST":
@@ -20,31 +24,44 @@ def handlesignup(request):
         email=request.POST['email']
         pass1=request.POST['pass1']
         pass2=request.POST['pass2']
-        profile_pic=request.FILES['profile']
+        college=request.POST['college']
+        degree=request.POST['degree']
+        gender=request.POST['gender']
+        dob=request.POST['dob']
+        insta_handle=request.POST['insta_handle']
+        fb_handle=request.POST['fb_handle']
+        twitter_handle=request.POST['twitter_handle']
+        phone=request.POST['phone']
         
         # Checks
         if len(username)>15:
-            messages.error(request,"Your Username Cannot Be Greater then 15 Characters")
+            messages.error(request,"Your Username Cannot Be Greater then 15 Characters",extra_tags='hello')
             return redirect('/')
 
         if not username.isalnum():
-            messages.error(request,"Your Username Should Contain only Alphabets and Numbers.")
+            messages.error(request,"Your Username Should Contain only Alphabets and Numbers.",extra_tags='hello')
             return redirect('/')
         
         if pass1!=pass2:
-            messages.error(request,"Both of your Passwords should be same")
+            messages.error(request,"Both of your Passwords should be same",extra_tags='hello')
             return redirect('/')
 
+        if len(phone)!=10:
+            messages.error(request,"Your Phone Must have 10 Numbers",extra_tags='hello')
+            return redirect('/')
+
+        all_objects=User.objects.all()
+        for i in all_objects:
+            if i.username==username:
+                messages.error(request,"Username already taken.Try Again",extra_tags='hello')
+                return redirect('/')
+
         myuser=User.objects.create_user(username,email,pass1)
-        myuser.first_name=fname
-        myuser.last_name=lname
         myuser.save()
-        # fss = FileSystemStorage()
-        # file = fss.save(profile.name, profile)
-        # file_url = fss.url(file)
-        # myprofile=Profile.objects.create(profile_user=myuser,profile_pic=file_url,Degree="123",College="456")
-        # myprofile.save()
-        messages.success(request,"Your account is Successfully Created.")
+        print(dob)
+        myprofile=Profile(profile_user=myuser,degree=degree,college=college,gender=gender,dob=dob,fname=fname,lname=lname,twitter_handle=twitter_handle,insta_handle=insta_handle,fb_handle=fb_handle,email=email,phone=phone)
+        myprofile.save()
+        messages.success(request,"Your account is Successfully Created.",extra_tags='hello')
         return redirect('/')
 
     else:
@@ -69,7 +86,7 @@ def handlelogin(request):
             messages.success(request,"Successfully Logged In")
             return redirect('/home')
         else:
-            messages.error(request,"Wrong Username or Password. Please Try again.")
+            messages.error(request,"Wrong Username or Password. Please Try again.",extra_tags='hello')
             return redirect('/')
 
     return HttpResponse(request,"404 - Page not Found")
@@ -77,7 +94,7 @@ def handlelogin(request):
 
 def handlelogout(request):
     logout(request)
-    messages.success(request,"Logged Out Successfully")
+    messages.success(request,"Logged Out Successfully",extra_tags='hello')
     return redirect('/')
 
 
@@ -102,19 +119,19 @@ def abts(request):
 def contactus(request):
     return render(request,'blog/contactus.html')
 
-
+@login_required(login_url='/')
 def addblog(request):
     return render(request,'blog/addblog.html')
 
+@login_required(login_url='/')
 def postblog(request):
     company_name=request.POST['company_name']
     job_profile=request.POST['job_profile']
     work_ex=request.POST['work_ex']
     experience=request.POST['experience']
-    if company_name=="" or job_profile=="" or work_ex=="" or experience=="":
-        messages.error("Invalid Post.Please Try Again Later")
+    offer_type=request.POST['offer_type']
     curr_user=request.user
-    a=Blog(company_name=company_name,job_profile=job_profile,work_ex=work_ex,experience=experience,author=curr_user.username)
+    a=Blog(company_name=company_name,job_profile=job_profile,work_ex=work_ex,experience=experience,author=curr_user.username,offer_type=offer_type)
     a.save()
 
     return redirect('/home')
@@ -136,29 +153,31 @@ def submitquery(request):
 
     return redirect('/')
 
+@login_required(login_url='/')
 def saveblog(request,id):
     post=Blog.objects.filter(id=id).first()
     post.favourites.add(request.user)
-    
     return redirect('/saved')
     
-
+@login_required(login_url='/')
 def rendersaved(request):
     all_objects=Blog.objects.filter(favourites=request.user)
     param={'all_objects':all_objects}
     return render(request,'blog/savedblogs.html',param)
 
+@login_required(login_url='/')
 def remsave(request,id):
     post=Blog.objects.filter(id=id).first()
     post.favourites.remove(request.user)
     return redirect('/saved')
 
-
+@login_required(login_url='/')
 def editblog(request,slug):
     post = Blog.objects.filter(slug=slug).first()
     param = {"post":post}
     return render(request,'blog/editblog.html',param)
 
+@login_required(login_url='/')
 def edit(request):
     company_name=request.POST['company_name']
     job_profile=request.POST['job_profile']
@@ -172,13 +191,30 @@ def edit(request):
     Blog.objects.filter(id=id).update(job_profile=job_profile,company_name=company_name,work_ex=work_ex,experience=experience)
     return redirect('/myblogs')
 
+@login_required(login_url='/')
 def profile(request,username):
     i=User.objects.filter(username=username).first()
-    param={"i":i}
+    j=Profile.objects.filter(profile_user=i).first()
+    param={"i":i, "j":j}
     return render(request,'blog/viewprofile.html',param)
 
+@login_required(login_url='/')
 def deleteblog(request,slug):
     i=Blog.objects.filter(slug=slug).first()
     print(i)
     i.delete()
     return redirect('/myblogs')
+
+def cpass(request,username):
+    print(username)
+    return render(request,'blog/changepass.html')
+
+
+def savepass(request):
+    i=request.user
+    oldpass=request.POST['oldpass']
+    newpass1=request.POST['newpass1']
+    newpass1=request.POST['newpass2']
+    i.set_password(newpass1)
+    i.save()
+    return redirect('/')

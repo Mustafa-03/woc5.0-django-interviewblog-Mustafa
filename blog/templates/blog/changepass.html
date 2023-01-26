@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+
+{% block body %}
+
+<h1 align="center">Password Change Form</h1>
+<form action="/savepass" method="post">
+<div class="content">
+    {% csrf_token %}
+    <p>
+      <label for="exampleFormControlInput1" class="form-label">Old Password</label>
+      <input type="password" class="form-control" name="oldpass" id="oldpass" required>
+    </p>
+
+    <p>
+      <label for="exampleFormControlTextarea1" class="form-label">New Password</label>
+      <input type="password" class="form-control" name="newpass1" id="newpass1" rows="1" required></input>
+    </p>
+    <p>
+        <label for="exampleFormControlTextarea1" class="form-label">Repeat New Password</label>
+        <input type="password" class="form-control" name="newpass2" id="newpass2" rows="1" required></input>
+    </p>
+    <button type="submit" class="btn btn-success">Save Password</button>
+  </div>
+  </form>
+
+  {% endblock %}

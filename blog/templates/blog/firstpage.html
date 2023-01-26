@@ -22,7 +22,14 @@
 <h4 align="center">Catch the reviews of the latest companies and their new positions free of cost and read the blogs without download.</h4>
 <div class="newpage">
 <a href="/home" role="button" class="btn btn-success my-4">Click Here to start Exploring</a>
-</div
+<br>
+{% if user.is_authenticated %}
+{% else %}
+<form action="/signuppage">
+<button class="btn btn-success" style="padding:3%" action="/signuppage">Click Here to Register</button>
+</form>
+{% endif %}
+</div>
 </div>
 
 {% endblock %}

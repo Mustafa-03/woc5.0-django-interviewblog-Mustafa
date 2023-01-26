@@ -1,37 +1,215 @@
 {% extends 'blog/base.html' %}
 
+{% block css %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
+
+*, body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+    height: 100%;
+    background-color: #152733;
+    overflow: hidden;
+}
+
+.bt{
+    color:black;
+    margin-top: -52px;
+}
+
+.form-holder {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+}
+
+.form-holder .form-content {
+    position: relative;
+    text-align: center;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 60px;
+}
+
+.form-content .form-items {
+    border: 3px solid black;
+    padding: 40px;
+    display: inline-block;
+    width: 100%;
+    min-width: 540px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-align: left;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.form-content h3 {
+    color: black;
+    text-align: left;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.form-content h3.form-title {
+    margin-bottom: 30px;
+}
+
+.form-content p {
+    color: black;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-bottom: 30px;
+}
+
+
+.form-content label, .was-validated .form-check-input:invalid~.form-check-label, .was-validated .form-check-input:valid~.form-check-label{
+    color:black;
+}
+
+.form-content input[type=text], .form-content input[type=password], .form-content input[type=email], .form-content select {
+    width: 100%;
+    padding: 9px 20px;
+    text-align: left;
+    border: 0;
+    outline: 0;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 300;
+    color: #8D8D8D;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    margin-top: 16px;
+}
+
+
+.btn-primary{
+    background-color: #6C757D;
+    outline: none;
+    border: 0px;
+     box-shadow: none;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active{
+    background-color: #495056;
+    outline: none !important;
+    border: none !important;
+     box-shadow: none;
+}
+
+.form-content textarea {
+    position: static !important;
+    width: 100%;
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-align: left;
+    background-color: #fff;
+    border: 0;
+    font-size: 15px;
+    font-weight: 300;
+    color: #8D8D8D;
+    outline: none;
+    resize: none;
+    height: 120px;
+    -webkit-transition: none;
+    transition: none;
+    margin-bottom: 14px;
+}
+
+.form-content textarea:hover, .form-content textarea:focus {
+    border: 0;
+    background-color: white;
+    color: #8D8D8D;
+}
+
+.mv-up{
+    margin-top: -9px !important;
+    margin-bottom: 8px !important;
+}
+
+</style>
+{% endblock %}
+
+
 {% block body %}
 
-<h1 align="CENTER"> ADD YOUR BLOG </h1>
+<div class="form-body bt">
+    <div class="row">
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h3>POST A BLOG</h3>
+                    <p>Fill in the data below.</p>
+                    <form class="requires-validation" method="post" action="postblog">
 
-<form method="POST" action="postblog" align="center">
-    <div class="ablg">
-    <p>
-        <label for="exampleFormControlInput1" class="form-label"><b>Company Name</b></label>
-        <input type="text" class="form-control" name="company_name"  id="company_name" required >
-    </p>
-    <p>
-        <label for="exampleFormControlInput1" class="form-label"><b>Years of Work Experience</b></label>
-        <input type="text" class="form-control" name="work_ex"  id="work_ex" required >
-    </p>
-    <p>
-        <label for="exampleFormControlInput1" class="form-label"><b>Job Profile</b></label>
-        <input type="text" class="form-control" name="job_profile"  id="job_profile" required >
-    </p>
-    <p>
-        <label for="exampleFormControlInput1" class="form-label"><b>Experience</b></label>
-        <textarea class="form-control" name="experience"  id="experience" rows="5" required ></textarea>
-    </p>
-    <!-- <p>
-        <label for="exampleFormControlInput1" class="form-label"><b>Slug</b></label>
-        <input type="text" class="form-control" name="slug"  id="slug" required >
-    </p> -->
+                        <div class="col-md-12">
+                            
+                           <input class="form-control" type="text" name="company_name" id="company_name"  required>
+                           <label>Company Name</label>
+                        </div>
 
-    <br>
-    <button class="my-2">POST BLOG</button>
+                        <div class="col-md-12">
+                            
+                            <input class="form-control" type="text" name="work_ex" id="work_ex"  required>
+                            <label>Years of Experience</label>
+                        </div>
+
+                        <div class="col-md-12">
+                            
+                            <input class="form-control" type="text" name="job_profile" id="job_profile"  required>
+                            <label>Job Profile</label>
+                        </div>
+
+                        <div class="col-md-12">
+                            <select class="form-select mt-3" name="offer_type" id="offer_type" required>
+                                  <option selected disabled value="">Offer Type</option>
+                                  <option value="Winter Internship">Winter Internship</option>
+                                  <option value="Summer Internship">Summer Internship</option>
+                                  <option value="Job">Job</option>
+                                  <option value="Job + Internship">Job  + Internship</option>
+                           </select>
+                            <div class="valid-feedback">You selected a position!</div>
+                            <div class="invalid-feedback">Please select a position!</div>
+                       </div>
+
+                        <div class="col-md-12">
+                            
+                            <textarea class="textarea mt-4" type="text" name="experience" id="experience"  required></textarea>
+                            <label>Experience</label>
+                        </div>
+                        <div class="form-button mt-1" align="center">
+                            <button id="submit" type="submit" class="btn btn-success">Post Blog</button>
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {% csrf_token %}
-
-</form>
+</div>
 
 {% endblock %}
+
+

@@ -11,6 +11,7 @@ class Blog(models.Model):
     company_name=models.CharField(max_length=100)
     job_profile=models.CharField(max_length=100)
     work_ex=models.IntegerField()
+    offer_type=models.CharField(max_length=50)
     experience=models.CharField(max_length=2000)
     slug = AutoSlugField(populate_from='company_name',unique=True,default=None)
     rate=models.IntegerField(validators=[MaxValueValidator(10),MinValueValidator(0)], null=True)
@@ -28,4 +29,19 @@ class contact(models.Model):
     name=models.CharField(max_length=100)
     username=models.CharField(max_length=50)
     query=models.CharField(max_length=1000)
+
+
+class Profile(models.Model):
+    profile_user=models.OneToOneField(User,on_delete=models.CASCADE)
+    fname=models.CharField(max_length=100)
+    lname=models.CharField(max_length=100)
+    degree=models.CharField(max_length=100)
+    college=models.CharField(max_length=200)
+    gender=models.CharField(max_length=50)
+    dob=models.DateTimeField()
+    phone=models.CharField(max_length=10)
+    email=models.EmailField()
+    insta_handle=models.CharField(max_length=200,null=True)
+    fb_handle=models.CharField(max_length=200,null=True)
+    twitter_handle=models.CharField(max_length=200,null=True)
 
