@@ -1,0 +1,37 @@
+{% extends 'blog/base.html' %}
+
+{% block body %}
+
+<h1 align="CENTER"> EDIT YOUR BLOG </h1>
+
+<form method="POST" action="/edit" align="center">
+    <div class="ablg">
+    <p>
+        <label for="exampleFormControlInput1" class="form-label"><b>Company Name</b></label>
+        <input type="text" class="form-control" name="company_name"  id="company_name" value="{{post.company_name}}"required >
+    </p>
+    <p>
+        <label for="exampleFormControlInput1" class="form-label"><b>Years of Work Experience</b></label>
+        <input type="text" class="form-control" name="work_ex"  id="work_ex" value="{{post.work_ex}}" required >
+    </p>
+    <p>
+        <label for="exampleFormControlInput1" class="form-label"><b>Job Profile</b></label>
+        <input type="text" class="form-control" name="job_profile"  id="job_profile" value="{{post.job_profile}}" required >
+    </p>
+    <p>
+        <label for="exampleFormControlInput1" class="form-label"><b>Experience</b></label>
+        <textarea class="form-control" name="experience"  id="experience" rows="5" required >{{post.experience}}</textarea>
+    </p>
+    <p>
+        <label for="exampleFormControlInput1" class="form-label"><b>ID</b></label>
+        <input type="text" class="form-control" name="id"  id="id" value="{{post.id}}" readonly>
+    </p>
+
+    <br>
+    <button class="my-2">Save</button>
+    </div>
+    {% csrf_token %}
+
+</form>
+
+{% endblock %}

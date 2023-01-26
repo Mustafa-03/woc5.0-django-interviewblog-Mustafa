@@ -17,7 +17,11 @@ urlpatterns = [
     path('postblog',views.postblog,name="postblog"),
     path('myblogs',views.myblogs,name="myblogs"),
     path('submitquery',views.submitquery,name="submitquery"),
-    path('saveblog',views.saveblog,name="saveblog")
-    
-    
+    path('save/<str:id>',views.saveblog,name="saveblog"),
+    path('saved',views.rendersaved,name="rendersaved"),
+    path('remsave/<str:id>',views.remsave,name="remsave"),
+    path('editblog/<str:slug>',views.editblog,name="editblog"),
+    path('edit',views.edit,name="edit"),
+    path('profile/<str:username>',views.profile,name="profile"),
+    path('delblog/<str:slug>',views.deleteblog,name="deleteblog")
 ]

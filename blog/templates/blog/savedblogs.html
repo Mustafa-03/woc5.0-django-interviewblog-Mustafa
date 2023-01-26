@@ -13,34 +13,34 @@
   background-color: rgb(45, 44, 44);
   color: white;
 }
-
 .blog_my{
   border-radius: 30px;
 }
 </style>
 {% endblock %}
 
-
 {% block body %}
 
 {% for i in all_objects %} 
+
 <div class="container blog_my">
   <div class="col p-4 d-flex flex-column position-static mb-4 mt-4">
     <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: {{i.author}}</strong>
     <h3 class="mb-0">{{i.company_name}}</h3>
     <div class="mb-1 ">{{i.work_ex}} Years Work Experience</div>
-    <div class="mb-1">Job Profile : <b>{{i.job_profile}}</b></div>
+    <div class="mb-1">{{i.job_profile}}</div>
     <p class="card-text mb-auto">{{i.experience | truncatechars:100 }}</p>
     <p style="text-align:right">Last Updated - {{i.updated_at}}</p>
     <div>
       <a href="view/{{i.slug}}" role="button" class="btn btn-success my-4">Continue reading</a>
       {% if user.is_authenticated %}
-      <a href="/save/{{i.id}}" role="button" class="btn btn-success my-4">Save</a>     <!-- Use save and remove from save option -->
+      <a href="/remsave/{{i.id}}" role="button" class="btn btn-success my-4">Remove from Saved</a>     <!-- Use save and remove from save option -->
       {% endif %}
     </div>
   </div>
 </div>
 
 {% endfor %}
+
 
 {% endblock %}

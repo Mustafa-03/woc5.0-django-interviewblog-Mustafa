@@ -1,9 +1,75 @@
 {% extends 'blog/base.html' %}
 
+{% block css %}
+<style>
+body {
+  background: grey;
+}
+
+.bg-image {
+  background-image: url('https://img.freepik.com/premium-photo/contact-us-customer-support-hotline-people-connect-call-customer-support-email-address-live-chat-internet-wifi_36325-3415.jpg?w=2000');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+</style>
+{% endblock %}
 
 {% block body %}
 
-<h1 align="CENTER">CONTACT US</h1>
+<div class="container-fluid px-5 my-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-10">
+      <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
+        <div class="card-body p-0">
+          <div class="row g-0">
+            <div class="col-sm-6 d-none d-sm-block bg-image"></div>
+            <div class="col-sm-6 p-4">
+              <div class="text-center">
+                <div class="h3 fw-light">Contact Form</div>
+                <p class="mb-4 text-muted"></p>
+              </div>
+              <form id="contactForm" data-sb-form-api-token="API_TOKEN" action="/submitquery" method="post">
+
+                <!-- Name Input -->
+                <div class="form-floating mb-3">
+                  <input class="form-control" id="contact_name" name="contact_name" type="text" placeholder="Name" data-sb-validations="required" />
+                  <label for="name">Name</label>
+                  <div class="invalid-feedback" data-sb-feedback="name:required">Name is required.</div>
+                </div>
+
+                <!-- Email Input -->
+                <div class="form-floating mb-3">
+                  <input class="form-control" id="contact_username" name="contact_username" type="text" placeholder="Username" data-sb-validations="required,email" />
+                  <label>Username</label>
+                </div>
+
+                <!-- Message Input -->
+                <div class="form-floating mb-3">
+                  <textarea class="form-control" id="contact_query" name="contact_query" type="text" placeholder="Message" style="height: 10rem;" data-sb-validations="required"></textarea>
+                  <label for="message">Message</label>
+                  <div class="invalid-feedback" data-sb-feedback="message:required">Message is required.</div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="d-grid">
+                  <button class="btn btn-success" id="submitButton" type="submit">Submit</button>
+                </div>
+                {% csrf_token %}
+              </form>
+              <!-- End of contact form -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <h1 align="CENTER">CONTACT US</h1>
 <h6 align="CENTER">Let's get this conversation started. Tell us a bit about yourself and we will get in touch with you as soon as we can</h6>
 <form action='/submitquery' method="post">
     <div class="contact_query">
@@ -11,17 +77,20 @@
 
             <p>
                 <label for="exampleFormControlInput1" class="form-label">Name</label>
-                <input type="text" class="form-control" name="name"  id="name" required >
+                <input type="text" class="form-control" name="contact_name"  id="contact_name" required >
             </p>
           <p>
             <label for="exampleFormControlInput1" class="form-label">Username</label>
-            <input type="text" class="form-control" name="username" id="username" >
+            <input type="text" class="form-control" name="contact_username" id="contact_username">
           </p>
           <p>
             <label for="exampleFormControlTextarea1" class="form-label">Query</label>
-            <textarea class="form-control" name="query" id="query" rows="5" required></textarea>
+            <textarea class="form-control" name="contact_query" id="contact_query" rows="5" required></textarea>
           </p>
+          <button class="btn btn-success">Submit</button>
         </div>
+        {% csrf_token %}
       </div>
+</form> -->
 
 {% endblock %}
