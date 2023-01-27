@@ -26,5 +26,7 @@ urlpatterns = [
     path('profile/<str:username>',views.profile,name="profile"),
     path('delblog/<str:slug>',views.deleteblog,name="deleteblog"),
     path('cpass/<str:username>',views.cpass,name="Change Password"),
-    path('savepass',views.savepass,name="Save Password")
+    path('savepass',views.savepass,name="Save Password"),
+    path('profile/editprof/<str:user>',views.editprof,name="Edit Profile"),
+    path('saveprofile',views.saveprofile,name="Save Profile")
 ]

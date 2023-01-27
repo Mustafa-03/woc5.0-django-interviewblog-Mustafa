@@ -194,6 +194,7 @@ def edit(request):
 @login_required(login_url='/')
 def profile(request,username):
     i=User.objects.filter(username=username).first()
+    print(i)
     j=Profile.objects.filter(profile_user=i).first()
     param={"i":i, "j":j}
     return render(request,'blog/viewprofile.html',param)
@@ -218,3 +219,23 @@ def savepass(request):
     i.set_password(newpass1)
     i.save()
     return redirect('/')
+
+
+def editprof(request,user):
+    i=User.objects.filter(username=user).first()
+    j=Profile.objects.filter(profile_user=i).first()
+    params={'j':j}
+    return render(request,'blog/editprof.html',params)
+
+def saveprofile(request):
+    if request.method=="POST":
+        email=request.POST['email']
+        college=request.POST['college']
+        degree=request.POST['degree']
+        insta_handle=request.POST['insta_handle']
+        fb_handle=request.POST['fb_handle']
+        twitter_handle=request.POST['twitter_handle']
+        phone=request.POST['phone']
+        i=request.user
+        Profile.objects.filter(profile_user=i).update(email=email,college=college,degree=degree,insta_handle=insta_handle,fb_handle=fb_handle,phone=phone,twitter_handle=twitter_handle)
+        return redirect(f'/profile/{i}')
