@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+
+{% block body %}
+<form method="post" action="/fpfunc">
+<input type="text" name="username" id="username">
+<button type="submit">Submit</button>
+{% csrf_token %}
+</form>
+
+{% endblock %}

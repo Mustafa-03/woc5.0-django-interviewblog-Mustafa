@@ -83,7 +83,7 @@ background: linear-gradient(to right bottom, white,black)
                     {% if j.fb_handle|stringformat:'s' != None|stringformat:'s' %}
                     <a href="{{j.twitter_handle}}" _blank><i class="fab fa-instagram fa-lg me-3"></i>TWITTER</a>
                     {% endif %}
-                    {% if request.user|stringformat:'s' != i.user|stringformat:'s' %}
+                    {% if request.user|stringformat:'s' == i.username|stringformat:'s' %}
                     <a href="editprof/{{i.username}}" _blank><i class="fab fa-instagram fa-lg me-3"></i> Edit Profile</a>
                     {% endif %}
                   </div>

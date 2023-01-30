@@ -3,6 +3,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractUser,User
 from autoslug import AutoSlugField
 from datetime import date, datetime
+from django.utils.timezone import now
+from ckeditor.fields import RichTextField
 
 
 
@@ -12,7 +14,7 @@ class Blog(models.Model):
     job_profile=models.CharField(max_length=100)
     work_ex=models.IntegerField()
     offer_type=models.CharField(max_length=50)
-    experience=models.CharField(max_length=2000)
+    experience=RichTextField(blank=True,null=True)
     slug = AutoSlugField(populate_from='company_name',unique=True,default=None)
     rate=models.IntegerField(validators=[MaxValueValidator(10),MinValueValidator(0)], null=True)
     author=models.CharField(max_length=50, null=True)
@@ -32,6 +34,7 @@ class contact(models.Model):
 
 
 class Profile(models.Model):
+    # id=models.AutoField(primary_key=True)
     profile_user=models.OneToOneField(User,on_delete=models.CASCADE)
     fname=models.CharField(max_length=100)
     lname=models.CharField(max_length=100)
@@ -44,4 +47,15 @@ class Profile(models.Model):
     insta_handle=models.CharField(max_length=200,null=True)
     fb_handle=models.CharField(max_length=200,null=True)
     twitter_handle=models.CharField(max_length=200,null=True)
+    # forget_pass_token=models.CharField(max_length=100)
 
+class BlogComment(models.Model):
+    sno=models.AutoField(primary_key=True)
+    comment=models.TextField()
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    post=models.ForeignKey(Blog,on_delete=models.CASCADE)
+    parent=models.OneToOneField('self', on_delete=models.CASCADE, null=True)
+    timestamp=models.DateTimeField(default=now)
+
+    def __str__(self):
+        return self.comment[0:13] + "..." + " by " + self.user.username

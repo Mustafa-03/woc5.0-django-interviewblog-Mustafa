@@ -22,15 +22,15 @@
 
 {% block body %}
 
-
+<h3>Here are your search Results</h3>
 {% for i in company_objects %} 
 <div class="container blog_my">
   <div class="col p-4 d-flex flex-column position-static mb-4 mt-4">
-    <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: {{i.author}}</strong>
+    <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: <a href="profile/{{i.author}}">{{i.author}}</a></strong>
     <h3 class="mb-0">{{i.company_name}}</h3>
     <div class="mb-1">{{i.work_ex}} Years Work Experience</div>
     <div class="mb-1">Job Profile : <b>{{i.job_profile}}</b></div>
-    <p class="card-text mb-auto">{{i.experience | truncatechars:100 }}</p>
+    <p class="card-text mb-auto">{{i.experience|safe|truncatechars:100}}</p>
     <p style="text-align:right">Last Updated - {{i.updated_at}}</p>
     <div>
       <a href="view/{{i.slug}}" role="button" class="btn btn-success my-4">Continue reading</a>
@@ -46,11 +46,11 @@
 {% for i in author_objects %} 
 <div class="container blog_my">
   <div class="col p-4 d-flex flex-column position-static mb-4 mt-4">
-    <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: {{i.author}}</strong>
+    <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: <a href="profile/{{i.author}}">{{i.author}}</a></strong>
     <h3 class="mb-0">{{i.company_name}}</h3>
     <div class="mb-1">{{i.work_ex}} Years Work Experience</div>
     <div class="mb-1">Job Profile : <b>{{i.job_profile}}</b></div>
-    <p class="card-text mb-auto">{{i.experience | truncatechars:100 }}</p>
+    <p class="card-text mb-auto">{{i.experience|safe|truncatechars:100}}</p>
     <div>
       <a href="view/{{i.slug}}" role="button" class="btn btn-success my-4">Continue reading</a>
       {% if user.is_authenticated %}
@@ -64,11 +64,11 @@
   {% for i in job_profile_objects %} 
   <div class="container blog_my">
     <div class="col p-4 d-flex flex-column position-static mb-4 mt-4">
-      <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: {{i.author}}</strong>
+      <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: <a href="profile/{{i.author}}">{{i.author}}</a></strong>
       <h3 class="mb-0">{{i.company_name}}</h3>
       <div class="mb-1">{{i.work_ex}} Years Work Experience</div>
       <div class="mb-1">Job Profile : <b>{{i.job_profile}}</b></div>
-      <p class="card-text mb-auto">{{i.experience | truncatechars:100 }}</p>
+      <p class="card-text mb-auto">{{i.experience|safe|truncatechars:100}}</p>
       <div>
         <a href="view/{{i.slug}}" role="button" class="btn btn-success my-4">Continue reading</a>
         {% if user.is_authenticated %}

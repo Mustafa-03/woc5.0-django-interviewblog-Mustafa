@@ -6,9 +6,12 @@ from django.contrib.auth import authenticate,logout
 from django.contrib.auth import login as auth_login
 from .models import Blog
 from .models import contact
-from .models import Profile
+from .models import Profile, BlogComment
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
+from .helper import send_forgot_password
+import uuid
+
 
 def login(request):
     return render(request,'blog/firstpage.html')
@@ -100,7 +103,8 @@ def handlelogout(request):
 
 def viewblog(request, slug):
     post = Blog.objects.filter(slug=slug).first()
-    param = {"post":post}
+    comments=BlogComment.objects.filter(post=post).order_by("-timestamp")
+    param = {"post":post,"comments":comments}
     return render(request,'blog/viewblog.html',param)
 
 
@@ -174,8 +178,12 @@ def remsave(request,id):
 @login_required(login_url='/')
 def editblog(request,slug):
     post = Blog.objects.filter(slug=slug).first()
-    param = {"post":post}
-    return render(request,'blog/editblog.html',param)
+    curr_user=request.user
+    if post.author == curr_user.username:
+        param = {"post":post}
+        return render(request,'blog/editblog.html',param)
+    else:
+        return redirect('/home')
 
 @login_required(login_url='/')
 def edit(request):
@@ -194,7 +202,7 @@ def edit(request):
 @login_required(login_url='/')
 def profile(request,username):
     i=User.objects.filter(username=username).first()
-    print(i)
+    #print(i)
     j=Profile.objects.filter(profile_user=i).first()
     param={"i":i, "j":j}
     return render(request,'blog/viewprofile.html',param)
@@ -202,7 +210,6 @@ def profile(request,username):
 @login_required(login_url='/')
 def deleteblog(request,slug):
     i=Blog.objects.filter(slug=slug).first()
-    print(i)
     i.delete()
     return redirect('/myblogs')
 
@@ -220,13 +227,14 @@ def savepass(request):
     i.save()
     return redirect('/')
 
-
+@login_required(login_url='/')
 def editprof(request,user):
     i=User.objects.filter(username=user).first()
     j=Profile.objects.filter(profile_user=i).first()
     params={'j':j}
     return render(request,'blog/editprof.html',params)
 
+@login_required(login_url='/')
 def saveprofile(request):
     if request.method=="POST":
         email=request.POST['email']
@@ -239,3 +247,63 @@ def saveprofile(request):
         i=request.user
         Profile.objects.filter(profile_user=i).update(email=email,college=college,degree=degree,insta_handle=insta_handle,fb_handle=fb_handle,phone=phone,twitter_handle=twitter_handle)
         return redirect(f'/profile/{i}')
+
+@login_required(login_url='/')
+def postcomment(request):
+    if request.method=="POST":
+        comment=request.POST.get("comment")
+        user=request.user
+        print(user)
+        postID=request.POST.get("postID")
+        post=Blog.objects.filter(id=postID).first()
+        post_comment=BlogComment(comment=comment,user=user,post=post)
+        post_comment.save()
+
+        return redirect(f'view/{post.slug}')
+
+
+def fprender(request):
+    # if request.method=='POST':
+        return render(request,'blog/forgotpass.html')
+
+def forgotpass(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        if not User.objects.filter(username=username).first():
+            messages.warning(request,'Enter a valid username')
+            return redirect('/forgotpass')
+
+        user_obj=User.objects.get(username=username)
+        token = str(uuid.uuid4())
+        prof_obj = Profile.objects.get(profile_user = user_obj)
+        prof_obj.forget_pass_token=token
+        prof_obj.save()
+        send_forgot_password(user_obj,token)
+        messages.success(request,'An E-mail is sent to you.')
+        return redirect('/forgotpass')
+
+
+def changepass(request,token):
+    prof_obj=Profile.objects.filter(forget_pass_token = token).first()
+    param={"prof_obj":prof_obj.profile_user.username}
+    return render(request,'blog/cpassemail.html',param)
+
+
+def cpassemail(request,token):
+    if request.method=='POST':
+        newpass1=request.POST.get('pass1')
+        newpass2=request.POST.get('pass2')
+        user_username=request.POST.get('prof_obj')
+
+        if user_username is None:
+            messages.success(request,"No User Found")
+            return redirect(f'/changepass{token}')
+
+        if newpass1 != newpass2:
+            messages.success(request,"Enter Password Correctly")
+            return redirect(f'/changepass{token}')
+
+        user_obj=User.objects.get(username=user_username) 
+        user_obj.set_password=newpass1
+        user_obj.save()
+        return redirect('/login') 

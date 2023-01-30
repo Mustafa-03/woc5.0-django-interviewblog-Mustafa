@@ -20,6 +20,9 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls.static import static
 
+admin.site.site_header="Interview Blog Admin"
+admin.site.index_title = "Welcome to Admin Panel"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('blog.urls'))

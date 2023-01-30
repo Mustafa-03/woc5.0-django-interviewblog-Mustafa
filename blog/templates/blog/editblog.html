@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 
+
 {% block body %}
 
 <h1 align="CENTER"> EDIT YOUR BLOG </h1>
@@ -19,8 +20,17 @@
         <input type="text" class="form-control" name="job_profile"  id="job_profile" value="{{post.job_profile}}" required >
     </p>
     <p>
-        <label for="exampleFormControlInput1" class="form-label"><b>Experience</b></label>
-        <textarea class="form-control" name="experience"  id="experience" rows="5" required >{{post.experience}}</textarea>
+        <textarea name="experience" id="experience">{{post.experience}}</textarea>
+        <script>
+                ClassicEditor
+                        .create( document.querySelector( '#experience' ) )
+                        .then( editor => {
+                                console.log( editor );
+                        } )
+                        .catch( error => {
+                                console.error( error );
+                        } );
+        </script>
     </p>
     <p>
         <label for="exampleFormControlInput1" class="form-label"><b>ID</b></label>
@@ -28,7 +38,7 @@
     </p>
 
     <br>
-    <button class="my-2">Save</button>
+    <button class="btn btn-success my-2">Save</button>
     </div>
     {% csrf_token %}
 
