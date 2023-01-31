@@ -263,14 +263,13 @@ def postcomment(request):
 
 
 def fprender(request):
-    # if request.method=='POST':
-        return render(request,'blog/forgotpass.html')
+    return render(request,'blog/forgotpass.html')
 
 def forgotpass(request):
     if request.method=='POST':
         username=request.POST.get('username')
         if not User.objects.filter(username=username).first():
-            messages.warning(request,'Enter a valid username')
+            messages.warning(request,'Enter a valid username',extra_tags='hello')
             return redirect('/forgotpass')
 
         user_obj=User.objects.get(username=username)
@@ -278,8 +277,8 @@ def forgotpass(request):
         prof_obj = Profile.objects.get(profile_user = user_obj)
         prof_obj.forget_pass_token=token
         prof_obj.save()
-        send_forgot_password(user_obj,token)
-        messages.success(request,'An E-mail is sent to you.')
+        send_forgot_password(prof_obj.email,token)
+        messages.success(request,'An E-mail is sent to you.',extra_tags='hello')
         return redirect('/forgotpass')
 
 
@@ -289,21 +288,21 @@ def changepass(request,token):
     return render(request,'blog/cpassemail.html',param)
 
 
-def cpassemail(request,token):
+def cpassemail(request):
     if request.method=='POST':
-        newpass1=request.POST.get('pass1')
-        newpass2=request.POST.get('pass2')
-        user_username=request.POST.get('prof_obj')
+        newpass1=request.POST['pass1']
+        newpass2=request.POST['pass2']
+        user_username=request.POST['prof_obj']
 
         if user_username is None:
-            messages.success(request,"No User Found")
-            return redirect(f'/changepass{token}')
+            messages.success(request,"No User Found",extra_tags='hello')
+            return redirect(f'/forgotpass')
 
         if newpass1 != newpass2:
-            messages.success(request,"Enter Password Correctly")
-            return redirect(f'/changepass{token}')
-
-        user_obj=User.objects.get(username=user_username) 
-        user_obj.set_password=newpass1
+            messages.success(request,"Enter Password Correctly",extra_tags='hello')
+            return redirect(f'/forgotpass')
+        user_obj=User.objects.filter(username=user_username).first()
+        user_obj.set_password(newpass1)
         user_obj.save()
-        return redirect('/login') 
+        messages.success(request,"Password Changed Successfully",extra_tags='hello')
+        return redirect('/') 

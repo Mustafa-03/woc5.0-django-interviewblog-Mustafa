@@ -31,8 +31,8 @@ urlpatterns = [
     path('profile/editprof/<str:user>',views.editprof,name="Edit Profile"),
     path('saveprofile',views.saveprofile,name="Save Profile"),
     path('postcomment',views.postcomment,name="postcomment"),
-    # path('forgotpass',views.fprender,name="Forgot Password"),
-    # path('fpfunc',views.forgotpass,name="Forgot Password Function"),
-    # path('changepass/<str:token>',views.changepass,name="Change Password with email"),
-    # path('savechangepass',views.cpassemail,name="Save The Changed Password")
+    path('forgotpass',views.fprender,name="Forgot Password"),
+    path('fpfunc',views.forgotpass,name="Forgot Password Function"),
+    path('changepass/<str:token>',views.changepass,name="Change Password with email"),
+    path('savechangepass',views.cpassemail,name="Save The Changed Password")
 ]

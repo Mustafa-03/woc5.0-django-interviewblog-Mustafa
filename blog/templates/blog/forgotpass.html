@@ -1,10 +1,33 @@
 {% extends 'blog/base.html' %}
 
+{% block css %}
+<style>
+    .content {
+        width: 50%;
+        height: 50%;
+        border: 3px solid black;
+        padding: 10px;
+      }
+</style>
+{% endblock %}
+
 {% block body %}
-<form method="post" action="/fpfunc">
-<input type="text" name="username" id="username">
-<button type="submit">Submit</button>
-{% csrf_token %}
-</form>
+<div class="content mt-6">
+<form action='/fpfunc' method="post">
+    
+    <div>
+        <div>
+            <h3 align="center">Username</h3>
+            <h6 align="center">We will send you a link to your mail to Reset your Password</h6>
+            <input type="text" class="form-control" name="username" id="username" required>
+        </div>
+      </div>
+      {% csrf_token %}
+      <div class="text-center my-4">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      
+    </form>
+</div>
 
 {% endblock %}

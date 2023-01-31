@@ -34,7 +34,7 @@ class contact(models.Model):
 
 
 class Profile(models.Model):
-    # id=models.AutoField(primary_key=True)
+    id=models.AutoField(primary_key=True)
     profile_user=models.OneToOneField(User,on_delete=models.CASCADE)
     fname=models.CharField(max_length=100)
     lname=models.CharField(max_length=100)
@@ -47,7 +47,7 @@ class Profile(models.Model):
     insta_handle=models.CharField(max_length=200,null=True)
     fb_handle=models.CharField(max_length=200,null=True)
     twitter_handle=models.CharField(max_length=200,null=True)
-    # forget_pass_token=models.CharField(max_length=100)
+    forget_pass_token=models.CharField(max_length=100,null=True)
 
 class BlogComment(models.Model):
     sno=models.AutoField(primary_key=True)
