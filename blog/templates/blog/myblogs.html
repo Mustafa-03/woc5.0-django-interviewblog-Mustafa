@@ -21,7 +21,7 @@
 
 {% block body %}
 
-{% for i in author_objects %} 
+{% for i in bg %} 
 <div class="container blog_my">
   <div class="col p-4 d-flex flex-column position-static mb-4 mt-4">
     <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: <a href="profile/{{i.author}}">{{i.author}}</a></strong>
@@ -42,5 +42,17 @@
 </div>
 
 {% endfor %}
+
+{% if bg.has_previous %}
+<a href="?page=1">&laquo First Page  </a>
+<a href="?page={{bg.previous_page_number}} ">Previous</a>
+{% endif %}
+
+Page {{bg.number}} of {{bg.paginator.num_pages}}
+
+{% if bg.has_next %}
+<a href="?page={{bg.next_page_number}} ">Next   </a>
+<a href="?page={{bg.paginator.num_pages}}">Last Page &raquo</a>
+{% endif %}
 
 {% endblock %}

@@ -11,6 +11,7 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.decorators import login_required
 from .helper import send_forgot_password
 import uuid
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 
 def login(request):
@@ -73,7 +74,10 @@ def handlesignup(request):
 
 def home(request):
     all_objects=Blog.objects.all()
-    param={"all_objects":all_objects}
+    paginator = Paginator(all_objects, 3)
+    page = request.GET.get('page')
+    bg=paginator.get_page(page)
+    param={"bg":bg}
 
     return render(request,'blog/home.html',param)
 
@@ -111,9 +115,12 @@ def viewblog(request, slug):
 def search(request):
     query=request.GET['query']
     company_objects=Blog.objects.filter(company_name__icontains=query)
-    author_objects=Blog.objects.filter(author__icontains=query)
-    job_profile_objects=Blog.objects.filter(job_profile__icontains=query)
-    params={'company_objects':company_objects,'author_objects':author_objects,'job_profile_objects':job_profile_objects}
+    #author_objects=Blog.objects.filter(author__icontains=query)
+    #job_profile_objects=Blog.objects.filter(job_profile__icontains=query)
+    paginator = Paginator(company_objects, 3)
+    page = request.GET.get('page')
+    bg=paginator.get_page(page)
+    params={'company_objects':company_objects,'bg':bg}
     return render (request,'blog/search.html',params)
 
 
@@ -144,7 +151,10 @@ def postblog(request):
 def myblogs(request):
     curr_user=request.user
     author_objects=Blog.objects.filter(author__icontains=curr_user.username)
-    params={'author_objects':author_objects}
+    paginator = Paginator(author_objects, 3)
+    page = request.GET.get('page')
+    bg=paginator.get_page(page)
+    params={'bg':bg}
     return render (request,'blog/myblogs.html',params)
 
 
@@ -166,7 +176,10 @@ def saveblog(request,id):
 @login_required(login_url='/')
 def rendersaved(request):
     all_objects=Blog.objects.filter(favourites=request.user)
-    param={'all_objects':all_objects}
+    paginator = Paginator(all_objects, 3)
+    page = request.GET.get('page')
+    bg=paginator.get_page(page)
+    param={'bg':bg}
     return render(request,'blog/savedblogs.html',param)
 
 @login_required(login_url='/')

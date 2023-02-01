@@ -41,7 +41,7 @@
 <div class="container mt-4 mb-4">
     <br>
     <h1>{{post.company_name}}</h1>
-
+    <a href="/save/{{post.id}}" role="button" class="btn btn-success my-2 blog_button" style="float:right">Save</a>
     <h6 class="profile">Job Profile : {{post.job_profile}}</h6>
     <h5 class="blog_by">BLOG BY: <a href="profile/{{post.author}}">{{post.author}}</a></h5>
     <p style="text-align:right">POSTED ON - {{post.updated_at}}</p>
@@ -49,8 +49,9 @@
     <br>
     <p class="exp mb-4" align="center">{{post.experience|safe}}</p>
     <br>
+    
     {% if request.user|stringformat:'s' == post.author|stringformat:'s' %}
-      <a href="/save/{{post.id}}" role="button" class="btn btn-success my-2 blog_button" style="float:right">Save</a>
+      
       <a href="/editblog/{{post.slug}}" role="button" class="btn btn-success my-2 blog_button" style="float:right">Edit</a>
       <a href="/delblog/{{post.slug}}" role="button" class="btn btn-success my-2 blog_button" style="float:right">Delete</a>
     {% endif %}

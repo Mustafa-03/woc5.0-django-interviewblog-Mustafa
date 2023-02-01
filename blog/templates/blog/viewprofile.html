@@ -1,17 +1,35 @@
 {% extends 'blog/base.html' %}
 
 {% block css %}
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-    .gradient-custom {
-/* fallback for old browsers */
+  .gradient-custom {
 background: grey;
 
-/* Chrome 10-25, Safari 5.1-6 */
 background: -webkit-linear-gradient(to right bottom, white,black);
 
-/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 background: linear-gradient(to right bottom, white,black)
+}
+.fa {
+  padding: 15px;
+  font-size: 15px;
+  width: 40px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.fa:hover {
+  opacity: 0.8;
+}
+
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
 }
 </style>
 
@@ -29,8 +47,8 @@ background: linear-gradient(to right bottom, white,black)
             <div class="row g-0">
               <div class="col-md-4 gradient-custom text-center text-white"
                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                  alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+                <img src="https://image.pngaaa.com/272/6344272-middle.png"
+                  alt="Avatar" class="img-fluid mt-5 mb-2" style="width: 80px;" />
                 <h5>{{j.fname}} {{j.lname}}</h5>
                 <p>{{j.degree}}</p>
                 <i class="far fa-edit mb-5"></i>
@@ -75,13 +93,13 @@ background: linear-gradient(to right bottom, white,black)
                   </div>
                   <div class="d-flex justify-content-start">
                     {% if j.fb_handle|stringformat:'s' != None|stringformat:'s' %}
-                    <a href="{{j.fb_handle}}" _blank><i class="fab fa-facebook-f fa-lg me-3"></i>FB</a>
+                    <a href="{{j.fb_handle}}" _blank><i class="fa fa-facebook fa-lg me-3"></i></a>
                     {% endif %}
                     {% if j.fb_handle|stringformat:'s' != None|stringformat:'s' %}
-                    <a href="{{j.insta_handle}}" _blank><i class="fab fa-twitter fa-lg me-3"></i>INSTA</a>
+                    <a href="{{j.insta_handle}}" _blank><i class="fa fa-instagram fa-lg me-3"></i></a>
                     {% endif %}
                     {% if j.fb_handle|stringformat:'s' != None|stringformat:'s' %}
-                    <a href="{{j.twitter_handle}}" _blank><i class="fab fa-instagram fa-lg me-3"></i>TWITTER</a>
+                    <a href="{{j.twitter_handle}}" _blank><i class="fa fa-twitter fa-lg me-3"></i></a>
                     {% endif %}
                     {% if request.user|stringformat:'s' == i.username|stringformat:'s' %}
                     <a href="editprof/{{i.username}}" _blank><i class="fab fa-instagram fa-lg me-3"></i> Edit Profile</a>
