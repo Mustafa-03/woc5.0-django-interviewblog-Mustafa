@@ -2,6 +2,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.login,name="Index"),
@@ -34,5 +35,8 @@ urlpatterns = [
     path('forgotpass',views.fprender,name="Forgot Password"),
     path('fpfunc',views.forgotpass,name="Forgot Password Function"),
     path('changepass/<str:token>',views.changepass,name="Change Password with email"),
-    path('savechangepass',views.cpassemail,name="Save The Changed Password")
+    path('savechangepass',views.cpassemail,name="Save The Changed Password"),
+    path('delcomm',views.delcomm,name="Delete Comment")
 ]
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

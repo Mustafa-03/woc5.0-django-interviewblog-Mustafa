@@ -4,10 +4,13 @@
 <style>
     .fpage{
         padding:15% 25% 15% 25%;
-        color:white;
+        color:black;
     }
     .newpage{
         padding-left:30%;
+    }
+    .regbut {
+        text-align: center;
     }
 </style>
 
@@ -21,12 +24,12 @@
 <h1 align="center">Welcome to the Interview Blog Website</h1>
 <h4 align="center">Catch the reviews of the latest companies and their new positions free of cost and read the blogs without download.</h4>
 <div class="newpage">
-<a href="/home" role="button" class="btn btn-success my-4">Click Here to start Exploring</a>
+<a href="/home" role="button" class="btn btn-success my-4">Start Exploring</a>
 <br>
 {% if user.is_authenticated %}
 {% else %}
 <form action="/signuppage">
-<button class="btn btn-success" style="padding:3%" action="/signuppage">Click Here to Register</button>
+<button class="btn btn-success regbut" action="/signuppage">Click Here to Register</button>
 </form>
 {% endif %}
 </div>

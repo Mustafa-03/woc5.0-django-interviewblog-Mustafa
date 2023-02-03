@@ -4,32 +4,34 @@
 <style>
 .card-text{
   word-wrap:normal;
-  white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 .exp{
   word-wrap:break-word;
+  text-overflow: ellipsis;
 }
 .container{
   border:3x solid black;
-  background-color: rgb(45, 44, 44);
-  color: white;
+  background-color: #d2d2d2;
+  color: black;
   border-radius: 30px;
-  max-width: 50%;
+  max-width: 60%;
+  word-wrap:break-word;
+  padding:1%
 }
 .blog_by{
-    color:aquamarine;
+    color:green;
 }
 .profile{
-    color:yellow;
+    color:brown;
 }
 .blog_button{
   margin: 2% 2% 2% 2%;
 }
 .comm{
   border-radius: 20px;
-  background-color: rgb(45, 44, 44);
+  background-color: #d2d2d2;
+  max-width: 800px;
 }
 
 </style>
@@ -39,14 +41,12 @@
 {% block body %}
 
 <div class="container mt-4 mb-4">
-    <br>
     <h1>{{post.company_name}}</h1>
     <a href="/save/{{post.id}}" role="button" class="btn btn-success my-2 blog_button" style="float:right">Save</a>
     <h6 class="profile">Job Profile : {{post.job_profile}}</h6>
     <h5 class="blog_by">BLOG BY: <a href="profile/{{post.author}}">{{post.author}}</a></h5>
-    <p style="text-align:right">POSTED ON - {{post.updated_at}}</p>
+    <p style="text-align:right">Last Updated - {{post.updated_at}}</p>
     <hr>
-    <br>
     <p class="exp mb-4" align="center">{{post.experience|safe}}</p>
     <br>
     
@@ -62,7 +62,7 @@
     <div class="row d-flex justify-content-center">
       <div class="col-md-8 col-lg-6" >
         <div class="card shadow-0 comm">
-          <h1 class="mt-2 mb-2"align = "center" style="color:white">Comment Section</h1>
+          <h1 class="mt-2 mb-2"align = "center" style="color:black">Comment Section</h1>
           <div class="card-body p-4">
             <form method="post" action="/postcomment">
               {% csrf_token %}
@@ -78,18 +78,22 @@
               <div class="card-body">
                 <p>{{comment.comment}}</p>
                 <p style="float:right">{{comment.timestamp}}</p>
-    
                 <div class="d-flex justify-content-between">
                   <div class="d-flex flex-row align-items-center">
                     <img src="data:image/png;base64,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" alt="avatar" width="25"
                       height="25" />
                     <p class="small mb-0 ms-2"><a href="profile/{{comment.user}}" _target="blank">{{comment.user}}</a></p>
+                {% if request.user|stringformat:'s' == comment.user|stringformat:'s' %}
+                <form action="/delcomm" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="comid" id="comid" value="{{comment.sno}}">
+                <input type="hidden" name="comuser" id="comuser" value="{{comment.user}}">
+                <input type="hidden" name="compost" id="compost" value="{{post.id}}">
+                <button type="submit" class="btn btn-success mx-2" style="text-align:right">Delete</button>
+                </form>
+                {% endif %}
+                
                   </div>
-                  <!-- <div class="d-flex flex-row align-items-center">
-                    <p class="small text-muted mb-0">Upvote?</p>
-                    <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
-                    <p class="small text-muted mb-0">3</p>
-                  </div> -->
                 </div>
               </div>
             </div>

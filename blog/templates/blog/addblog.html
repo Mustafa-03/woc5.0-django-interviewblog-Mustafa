@@ -14,9 +14,10 @@
         border: 3px solid black;
         padding: 10px;
         border-radius:30px;
+        background-color: #d2d2d2;
 }
 .mar {
-    margin:auto;
+    margin-bottom: 3%;
 }
 
 </style>
@@ -35,21 +36,21 @@
                     <form class="requires-validation" method="post" action="postblog">
 
                         <div class="col-md-12 mar">
-                            
+                            <label>Company Name</label>
                            <input class="form-control" type="text" name="company_name" id="company_name"  required>
-                           <label>Company Name</label>
+                           
                         </div>
 
                         <div class="col-md-12 mar">
-                            
-                            <input class="form-control" type="text" name="work_ex" id="work_ex"  required>
                             <label>Years of Experience</label>
+                            <input class="form-control" type="text" name="work_ex" id="work_ex"  required>
+                            
                         </div>
 
                         <div class="col-md-12 mar">
-                            
-                            <input class="form-control" type="text" name="job_profile" id="job_profile"  required>
                             <label>Job Profile</label>
+                            <input class="form-control" type="text" name="job_profile" id="job_profile"  required>
+                            
                         </div>
 
                         <div class="col-md-12 mar">
@@ -65,7 +66,7 @@
                        </div>
 
                        <div class="mt-4 mar">
-                        <textarea name="experience" id="experience">Enter your content Here</textarea>
+                        <textarea name="experience" id="experience" placeholder="Enter your content Here"></textarea>
                         <script>
                                 ClassicEditor
                                         .create( document.querySelector( '#experience' ) )

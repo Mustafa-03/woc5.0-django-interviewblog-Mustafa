@@ -1,5 +1,12 @@
 {% extends 'blog/base.html' %}
+{% block css %} 
+<style>
+  .content{
+    background-color: #d2d2d2;
+  }
+</style>
 
+{% endblock %}
 {% block body %}
 <div class="mt-3">
 <form action='/signup' method="post" enctype="multipart/form-data">
@@ -45,6 +52,10 @@
             <label for="exampleFormControlInput1" class="form-label">College Name</label>
             <input type="text" class="form-control" name="college" id="college" required>
           </p>
+          <p>
+            <label for="exampleFormControlInput1" class="form-label">Currently Working at</label>
+            <input type="text" class="form-control" name="curwork" id="curwork" required>
+          </p>
           <div class="col-md-12 my-4">
             <select class="form-select mt-3" name="gender" id="gender" required>
                   <option selected disabled value="">Gender</option>
@@ -76,7 +87,10 @@
         <label for="exampleFormControlInput1" class="form-label">Twitter Handle URL</label>
         <input type="text" class="form-control" name="twitter_handle" id="twitter_handle">
       </p>
-    
+      <p>
+        <label for="exampleFormControlInput1" class="form-label">Upload Profile Photo</label>
+        <input type="file" class="form-control" name="image" id="image">
+      </p>
         </div>
       </div>
       {% csrf_token %}

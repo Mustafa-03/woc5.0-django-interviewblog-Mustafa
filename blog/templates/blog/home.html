@@ -8,14 +8,37 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* #d7ddee */
 .container{
-  border:3x solid black;
-  background-color: rgb(45, 44, 44);
-  color: white;
+  background-color: #d2d2d2;
+  color: black;
+}
+.cen1{
+  margin-right: 5px;
+  margin-left: 5px;
+  
+}
+.cen2{
+  margin-right: 5px;
+  margin-left: 5px;
+  
+}
+.cen3{
+  margin-right: 5px;
+  margin-left: 5px;
+  
+}
+.cen4{
+  margin-right: 5px;
+  margin-left: 5px;
+  
 }
 
 .blog_my{
   border-radius: 30px;
+}
+.f{
+  font-size: 18px;
 }
 </style>
 {% endblock %}
@@ -25,20 +48,20 @@
 
 {% for i in bg %} 
 <div class="container blog_my">
-  <div class="col p-4 d-flex flex-column position-static mb-4 mt-4">
-    <strong class="d-inline-block mb-2" style="color:lightblue">Blog By: <a href="profile/{{i.author}}">{{i.author}}</a></strong>
-    <h3 class="mb-0">{{i.company_name}}</h3>
-    <div class="mb-1 ">{{i.work_ex}} Years Work Experience</div>
-    <div class="mb-1">Job Profile : <b>{{i.job_profile}} - {{i.offer_type}}</b></div>
-    <p class="card-text mb-auto">{{i.experience|safe|truncatechars:100}}</p>
-    <p style="text-align:right">Posted On - {{i.updated_at}}</p>
+  <div class="col p-4 d-flex flex-column position-static mb-5 mt-4">
+    <div class="d-inline-block mb-2" style="color:rgb(84, 32, 2)">Blog By: <a href="profile/{{i.author}}">{{i.author}}</a></div>
+    <h3 class="mb-0">Company : {{i.company_name}}</h3>
+    <div class="mb-1 f" style="margin-top : 5px"><b>Work Experience :</b> {{i.work_ex}} years</div>
+    <div class="mb-1"><b>Job Profile :</b> {{i.job_profile}} - {{i.offer_type}}</div>
+    <p class="card-text mb-auto">{{i.experience|safe|truncatechars:100}}</b></p>
+    <p style="text-align:right">Last Updated - {{i.updated_at}}</p>
     <div>
-      <a href="view/{{i.slug}}" role="button" class="btn btn-success my-4">Continue reading</a>
+      <a href="view/{{i.slug}}" role="button" class="btn btn-success my-2">Continue reading</a>
       {% if user.is_authenticated %}
       {% if request.user|stringformat:'s' == i.favourites|stringformat:'s' %}
-      <a href="/save/{{i.id}}" role="button" class="btn btn-success my-4">Remove From Saved</a>
+      <a href="/save/{{i.id}}" role="button" class="btn btn-success my-2">Remove From Saved</a>
       {% else %}
-      <a href="/save/{{i.id}}" role="button" class="btn btn-success my-4">Save</a>
+      <a href="/save/{{i.id}}" role="button" class="btn btn-success my-2">Save</a>
       {% endif %}
       {% endif %}
     </div>
@@ -46,17 +69,18 @@
 </div>
 
 {% endfor %}
-
+<div style="text-align : center">
 {% if bg.has_previous %}
-<a href="?page=1">&laquo First Page  </a>
-<a href="?page={{bg.previous_page_number}} ">Previous</a>
+<a href="?page=1" class="cen1">&laquo First Page  </a>
+<a href="?page={{bg.previous_page_number}}" class="cen2">Previous</a>
 {% endif %}
 
-Page {{bg.number}} of {{bg.paginator.num_pages}}
+  Page {{bg.number}} of {{bg.paginator.num_pages}}
 
 {% if bg.has_next %}
-<a href="?page={{bg.next_page_number}} ">Next   </a>
-<a href="?page={{bg.paginator.num_pages}}">Last Page &raquo</a>
+<a href="?page={{bg.next_page_number}}" class="cen3">Next   </a>
+<a href="?page={{bg.paginator.num_pages}}" class="cen4">Last Page &raquo</a>
 {% endif %}
+</div>
 
 {% endblock %}

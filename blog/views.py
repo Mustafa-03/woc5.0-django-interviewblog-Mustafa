@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from .helper import send_forgot_password
 import uuid
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+import datetime
 
 
 def login(request):
@@ -36,6 +37,8 @@ def handlesignup(request):
         fb_handle=request.POST['fb_handle']
         twitter_handle=request.POST['twitter_handle']
         phone=request.POST['phone']
+        currwork=request.POST['curwork']
+        image=request.FILES['image']
         
         # Checks
         if len(username)>15:
@@ -62,8 +65,7 @@ def handlesignup(request):
 
         myuser=User.objects.create_user(username,email,pass1)
         myuser.save()
-        print(dob)
-        myprofile=Profile(profile_user=myuser,degree=degree,college=college,gender=gender,dob=dob,fname=fname,lname=lname,twitter_handle=twitter_handle,insta_handle=insta_handle,fb_handle=fb_handle,email=email,phone=phone)
+        myprofile=Profile(profile_user=myuser,degree=degree,college=college,gender=gender,dob=dob,fname=fname,lname=lname,twitter_handle=twitter_handle,insta_handle=insta_handle,fb_handle=fb_handle,email=email,phone=phone,profile_pic=image,currwork=curwork)
         myprofile.save()
         messages.success(request,"Your account is Successfully Created.",extra_tags='hello')
         return redirect('/')
@@ -73,7 +75,7 @@ def handlesignup(request):
 
 
 def home(request):
-    all_objects=Blog.objects.all()
+    all_objects=Blog.objects.all().order_by('-updated_at')
     paginator = Paginator(all_objects, 3)
     page = request.GET.get('page')
     bg=paginator.get_page(page)
@@ -114,7 +116,7 @@ def viewblog(request, slug):
 
 def search(request):
     query=request.GET['query']
-    company_objects=Blog.objects.filter(company_name__icontains=query)
+    company_objects=Blog.objects.filter(company_name__icontains=query).order_by('-updated_at') | Blog.objects.filter(author__icontains=query).order_by('-updated_at') | Blog.objects.filter(job_profile__icontains=query).order_by('-updated_at')
     #author_objects=Blog.objects.filter(author__icontains=query)
     #job_profile_objects=Blog.objects.filter(job_profile__icontains=query)
     paginator = Paginator(company_objects, 3)
@@ -157,7 +159,6 @@ def myblogs(request):
     params={'bg':bg}
     return render (request,'blog/myblogs.html',params)
 
-
 def submitquery(request):
     name=request.POST['contact_name']
     username=request.POST['contact_username']
@@ -175,7 +176,7 @@ def saveblog(request,id):
     
 @login_required(login_url='/')
 def rendersaved(request):
-    all_objects=Blog.objects.filter(favourites=request.user)
+    all_objects=Blog.objects.filter(favourites=request.user).order_by('-updated_at')
     paginator = Paginator(all_objects, 3)
     page = request.GET.get('page')
     bg=paginator.get_page(page)
@@ -208,8 +209,9 @@ def edit(request):
     if company_name=="" or job_profile=="" or work_ex=="" or experience=="":
         messages.error("Invalid Post.Please Try Again Later")
         return redirect('/myblogs')
+    current_datetime = datetime.datetime.now()
     curr_user=request.user
-    Blog.objects.filter(id=id).update(job_profile=job_profile,company_name=company_name,work_ex=work_ex,experience=experience)
+    Blog.objects.filter(id=id).update(job_profile=job_profile,company_name=company_name,work_ex=work_ex,experience=experience,updated_at=current_datetime)
     return redirect('/myblogs')
 
 @login_required(login_url='/')
@@ -257,23 +259,43 @@ def saveprofile(request):
         fb_handle=request.POST['fb_handle']
         twitter_handle=request.POST['twitter_handle']
         phone=request.POST['phone']
+        currwork=request.POST['curwork']
+        image=request.FILES['image']
         i=request.user
-        Profile.objects.filter(profile_user=i).update(email=email,college=college,degree=degree,insta_handle=insta_handle,fb_handle=fb_handle,phone=phone,twitter_handle=twitter_handle)
+        prof=Profile.objects.get(profile_user=i)
+        prof.email=email
+        i.email=email
+        prof.college=college
+        prof.degree=degree
+        prof.insta_handle=insta_handle
+        prof.fb_handle=fb_handle
+        prof.phone=phone
+        prof.twitter_handle=twitter_handle
+        prof.currwork=currwork
+        prof.profile_pic=image
+        prof.save()
+        #prof=Profile.objects.filter(profile_user=i).update(profile_pic=image)
         return redirect(f'/profile/{i}')
 
 @login_required(login_url='/')
 def postcomment(request):
     if request.method=="POST":
+        curr_user=request.user
+        print(curr_user is None)
         comment=request.POST.get("comment")
         user=request.user
-        print(user)
         postID=request.POST.get("postID")
         post=Blog.objects.filter(id=postID).first()
-        post_comment=BlogComment(comment=comment,user=user,post=post)
-        post_comment.save()
+        if curr_user is None:
+            print("heyyyy")
+            messages.error(request,"Please Log in to Comment",extra_tags='hello')
+            return redirect(f'view/{post.slug}')
 
-        return redirect(f'view/{post.slug}')
-
+        if curr_user is not None:
+            post_comment=BlogComment(comment=comment,user=user,post=post)
+            post_comment.save()
+            return redirect(f'view/{post.slug}')
+        
 
 def fprender(request):
     return render(request,'blog/forgotpass.html')
@@ -319,3 +341,18 @@ def cpassemail(request):
         user_obj.save()
         messages.success(request,"Password Changed Successfully",extra_tags='hello')
         return redirect('/') 
+
+def delcomm(request):
+    if request.method=='POST':
+        comid=request.POST['comid']
+        postid=request.POST['compost']
+        post=Blog.objects.filter(id=postid).first()
+        delpost=BlogComment.objects.filter(sno=comid).first()
+        user=request.POST['comuser']
+        if user == request.user.username:
+            messages.success(request,"Comment deleted successfully",extra_tags='hello')
+            delpost.delete()
+        else:
+            messages.warning(request,"You are not allowed to delete this comment",extra_tags='hello')
+
+    return redirect(f'view/{post.slug}')

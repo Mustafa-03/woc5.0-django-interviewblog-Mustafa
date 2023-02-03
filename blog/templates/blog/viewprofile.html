@@ -4,11 +4,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
   .gradient-custom {
-background: grey;
+background: #d2d2d2;
 
-background: -webkit-linear-gradient(to right bottom, white,black);
+/* background: -webkit-linear-gradient(to right bottom, rgb(204, 232, 194),rgb(38, 92, 32));
 
-background: linear-gradient(to right bottom, white,black)
+background: linear-gradient(to right bottom, rgb(204, 232, 194),rgb(38, 92, 32)) */
 }
 .fa {
   padding: 15px;
@@ -31,27 +31,35 @@ background: linear-gradient(to right bottom, white,black)
   background: #55ACEE;
   color: white;
 }
+.c{
+  margin-top: 20%;
+  color:black;
+}
+.b{
+  color:black;
+}
 </style>
 
 {% endblock %}
 
-
-
 {% block body %}
 
-<section class="vh-100" style="background-color: #f4f5f7;">
+<section class="vh-100" style="background-color: rgb(222, 250, 222);">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-lg-6 mb-4 mb-lg-0">
           <div class="card mb-3" style="border-radius: .5rem;">
             <div class="row g-0">
-              <div class="col-md-4 gradient-custom text-center text-white"
+              <div class="col-md-4 gradient-custom text-center text-white b"
                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                <img src="https://image.pngaaa.com/272/6344272-middle.png"
-                  alt="Avatar" class="img-fluid mt-5 mb-2" style="width: 80px;" />
-                <h5>{{j.fname}} {{j.lname}}</h5>
-                <p>{{j.degree}}</p>
-                <i class="far fa-edit mb-5"></i>
+                <img src="{{j.profile_pic}}" alt="..." class="img-fluid mb-2 c" style="width: 200px;" />
+                <h5 class="b">{{j.fname}} {{j.lname}}</h5>
+                <p class="b">{{j.degree}}</p>
+                <form action="/search">
+                  {% csrf_token %}
+                  <input type="hidden" name="query" id="query" value="{{i.username}}">
+                  <button type="submit" class="btn btn-success">View Blogs</button>
+                </form>
               </div>
               <div class="col-md-8">
                 <div class="card-body p-4">
@@ -63,8 +71,8 @@ background: linear-gradient(to right bottom, white,black)
                       <p class="text-muted">{{j.email}}</p>
                     </div>
                     <div class="col-6 mb-3">
-                      <h6>Phone</h6>
-                      <p class="text-muted">{{j.phone}}</p>
+                      <h6>Currently Working at</h6>
+                      <p class="text-muted">{{j.currwork}}</p>
                     </div>
                   </div>
                   <h6>Education Qualifications</h6>
@@ -102,7 +110,7 @@ background: linear-gradient(to right bottom, white,black)
                     <a href="{{j.twitter_handle}}" _blank><i class="fa fa-twitter fa-lg me-3"></i></a>
                     {% endif %}
                     {% if request.user|stringformat:'s' == i.username|stringformat:'s' %}
-                    <a href="editprof/{{i.username}}" _blank><i class="fab fa-instagram fa-lg me-3"></i> Edit Profile</a>
+                    <a href="editprof/{{i.username}}" _blank>Edit Profile</a>
                     {% endif %}
                   </div>
                 </div>

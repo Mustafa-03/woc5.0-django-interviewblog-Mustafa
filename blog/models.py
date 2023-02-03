@@ -41,13 +41,18 @@ class Profile(models.Model):
     degree=models.CharField(max_length=100)
     college=models.CharField(max_length=200)
     gender=models.CharField(max_length=50)
-    dob=models.DateTimeField()
+    dob=models.DateField()
     phone=models.CharField(max_length=10)
     email=models.EmailField()
     insta_handle=models.CharField(max_length=200,null=True)
     fb_handle=models.CharField(max_length=200,null=True)
     twitter_handle=models.CharField(max_length=200,null=True)
     forget_pass_token=models.CharField(max_length=100,null=True)
+    profile_pic = models.ImageField(upload_to='profiles/',null=True)
+    currwork = models.CharField(max_length=100,null=True)
+
+    def __str__(self):
+        return self.profile_user
 
 class BlogComment(models.Model):
     sno=models.AutoField(primary_key=True)

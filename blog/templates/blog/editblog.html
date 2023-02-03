@@ -1,12 +1,24 @@
 {% extends 'blog/base.html' %}
 
+{% block css %}
+<style>
+    .x{
+        background-color: #d2d2d2;
+    }
+    .form-label{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+</style>
+
+{% endblock %}
 
 {% block body %}
 
 <h1 align="CENTER"> EDIT YOUR BLOG </h1>
 
 <form method="POST" action="/edit" align="center">
-    <div class="ablg">
+    <div class="ablg x">
     <p>
         <label for="exampleFormControlInput1" class="form-label"><b>Company Name</b></label>
         <input type="text" class="form-control" name="company_name"  id="company_name" value="{{post.company_name}}"required >
