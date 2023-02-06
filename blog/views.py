@@ -65,7 +65,7 @@ def handlesignup(request):
 
         myuser=User.objects.create_user(username,email,pass1)
         myuser.save()
-        myprofile=Profile(profile_user=myuser,degree=degree,college=college,gender=gender,dob=dob,fname=fname,lname=lname,twitter_handle=twitter_handle,insta_handle=insta_handle,fb_handle=fb_handle,email=email,phone=phone,profile_pic=image,currwork=curwork)
+        myprofile=Profile(profile_user=myuser,degree=degree,college=college,gender=gender,dob=dob,fname=fname,lname=lname,twitter_handle=twitter_handle,insta_handle=insta_handle,fb_handle=fb_handle,email=email,phone=phone,profile_pic=image,currwork=currwork)
         myprofile.save()
         messages.success(request,"Your account is Successfully Created.",extra_tags='hello')
         return redirect('/')
