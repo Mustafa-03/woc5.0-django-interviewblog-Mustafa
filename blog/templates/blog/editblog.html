@@ -32,7 +32,7 @@
         <input type="text" class="form-control" name="job_profile"  id="job_profile" value="{{post.job_profile}}" required >
     </p>
     <p>
-        <textarea name="experience" id="experience">{{post.experience}}</textarea>
+        <textarea name="experience" id="experience" required>{{post.experience}}</textarea>
         <script>
                 ClassicEditor
                         .create( document.querySelector( '#experience' ) )
