@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -23,7 +24,7 @@ def signuppage(request):
 
 def handlesignup(request):
     if request.method=="POST":
-        username=request.POST["username"]
+        username=request.POST['username']
         fname=request.POST['fname']
         lname=request.POST['lname']
         email=request.POST['email']
@@ -73,7 +74,6 @@ def handlesignup(request):
     else:
         return HttpResponse('404 - Not Found')
 
-
 def home(request):
     all_objects=Blog.objects.all().order_by('-updated_at')
     paginator = Paginator(all_objects, 3)
@@ -100,12 +100,10 @@ def handlelogin(request):
 
     return HttpResponse(request,"404 - Page not Found")
 
-
 def handlelogout(request):
     logout(request)
     messages.success(request,"Logged Out Successfully",extra_tags='hello')
     return redirect('/')
-
 
 def viewblog(request, slug):
     post = Blog.objects.filter(slug=slug).first()
@@ -113,18 +111,14 @@ def viewblog(request, slug):
     param = {"post":post,"comments":comments}
     return render(request,'blog/viewblog.html',param)
 
-
 def search(request):
     query=request.GET['query']
     company_objects=Blog.objects.filter(company_name__icontains=query).order_by('-updated_at') | Blog.objects.filter(author__icontains=query).order_by('-updated_at') | Blog.objects.filter(job_profile__icontains=query).order_by('-updated_at')
-    #author_objects=Blog.objects.filter(author__icontains=query)
-    #job_profile_objects=Blog.objects.filter(job_profile__icontains=query)
     paginator = Paginator(company_objects, 3)
     page = request.GET.get('page')
     bg=paginator.get_page(page)
     params={'company_objects':company_objects,'bg':bg}
     return render (request,'blog/search.html',params)
-
 
 def abts(request):
     return render(request,'blog/abts.html')
@@ -173,6 +167,7 @@ def saveblog(request,id):
     post=Blog.objects.filter(id=id).first()
     post.favourites.add(request.user)
     return redirect('/saved')
+    # return HttpResponseRedirect(request.path_info)
     
 @login_required(login_url='/')
 def rendersaved(request):
@@ -214,7 +209,6 @@ def edit(request):
     Blog.objects.filter(id=id).update(job_profile=job_profile,company_name=company_name,work_ex=work_ex,experience=experience,updated_at=current_datetime)
     return redirect('/myblogs')
 
-@login_required(login_url='/')
 def profile(request,username):
     i=User.objects.filter(username=username).first()
     #print(i)
@@ -231,7 +225,6 @@ def deleteblog(request,slug):
 def cpass(request,username):
     print(username)
     return render(request,'blog/changepass.html')
-
 
 def savepass(request):
     i=request.user
@@ -277,25 +270,20 @@ def saveprofile(request):
         #prof=Profile.objects.filter(profile_user=i).update(profile_pic=image)
         return redirect(f'/profile/{i}')
 
-@login_required(login_url='/')
 def postcomment(request):
     if request.method=="POST":
         curr_user=request.user
-        print(curr_user is None)
         comment=request.POST.get("comment")
-        user=request.user
         postID=request.POST.get("postID")
         post=Blog.objects.filter(id=postID).first()
-        if curr_user is None:
-            print("heyyyy")
+        if curr_user.is_authenticated:
+            post_comment=BlogComment(comment=comment,user=curr_user,post=post)
+            post_comment.save()
+            messages.error(request,"Comment Posted Successfully",extra_tags='hello')
+            return redirect(f'view/{post.slug}')
+        else:
             messages.error(request,"Please Log in to Comment",extra_tags='hello')
             return redirect(f'view/{post.slug}')
-
-        if curr_user is not None:
-            post_comment=BlogComment(comment=comment,user=user,post=post)
-            post_comment.save()
-            return redirect(f'view/{post.slug}')
-        
 
 def fprender(request):
     return render(request,'blog/forgotpass.html')
@@ -316,12 +304,10 @@ def forgotpass(request):
         messages.success(request,'An E-mail is sent to you.',extra_tags='hello')
         return redirect('/forgotpass')
 
-
 def changepass(request,token):
     prof_obj=Profile.objects.filter(forget_pass_token = token).first()
     param={"prof_obj":prof_obj.profile_user.username}
     return render(request,'blog/cpassemail.html',param)
-
 
 def cpassemail(request):
     if request.method=='POST':

@@ -53,14 +53,19 @@
         padding: 10px;
         border-radius: 20px;
       }
+      .bgimage {
+        background-size:cover;
+        filter: brightness(50%);
+        background-repeat: repeat-x;
+      }
 
     </style>
     {% block css %} {% endblock %}
 
   </head>
   <!-- #fcf4d9 -->
-  <body style="background-color:rgb(222, 250, 222)">
-    
+  <!-- <body background="https://th.bing.com/th/id/R.14f4f03c6c163047e4242ca621f11c94?rik=JLvYt%2fAMUzpLqQ&riu=http%3a%2f%2flava360.com%2fwp-content%2fuploads%2f2014%2f01%2fClassic-Background-Images-For-Wordpress-Blogs-111.jpg&ehk=Y8P61bETK3naLPdf%2f0gNQO3h51ZKd358UpO3HLYajPw%3d&risl=&pid=ImgRaw&r=0" > -->
+    <body style="background-color:#fcf4d9">
     <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">Interview Blog</a>
@@ -98,8 +103,7 @@
           {% if user.is_authenticated %}
           <ul class="navbar-nav ml-auto">
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  You are Logged in as {{request.user}}
+                <a class="nav-link dropdown-toggle mx-4"  href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{request.user}}
                 </a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/saved">Saved Blogs</a></li>
